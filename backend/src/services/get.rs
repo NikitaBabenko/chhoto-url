@@ -206,7 +206,12 @@ pub(crate) async fn oidc_redirect(
     secrets.insert(state, (pkce_verifier, nonce));
 
     debug!("Attempting OIDC login.");
-    Either::Right(Redirect::to(auth_url.to_string()))
+    Either::Left(
+        HttpResponse::Found()
+            .insert_header(("Location", auth_url.to_string()))
+            .insert_header(("Cache-Control", "no-store, no-cache, must-revalidate"))
+            .finish(),
+    )
 }
 
 //OIDC callback
