@@ -11,8 +11,6 @@ use std::{
 };
 use url::Url;
 
-use crate::auth;
-
 #[derive(Clone)]
 pub(crate) enum SlugStyle {
     Pair,
