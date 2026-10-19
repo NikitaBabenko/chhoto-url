@@ -7,3 +7,5 @@ resources/assets/favicon.ico filter=lfs diff=lfs merge=lfs -text
 resources/assets/favicon.svg filter=lfs diff=lfs merge=lfs -text
 site/static/banner.png filter=lfs diff=lfs merge=lfs -text
 docs/banner.svgz filter=lfs diff=lfs merge=lfs -text
+# Materialized website copies must stay available in ordinary source archives.
+site/static/assets/* -filter

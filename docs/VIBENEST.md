@@ -75,6 +75,8 @@ The database, WAL/SHM companions and rotating SQLite backups all belong under
 during restart/replacement and keep independent backups for real usage. Upstream
 documentation screenshots use Git LFS; runtime frontend assets do not. Frontend
 QR generation uses a versioned jsDelivr script and needs browser network access.
+The fork materializes six website image symlinks as byte-identical ordinary files
+for source-archive portability; all original target assets remain in the tree.
 
 ## Acceptance still required
 
