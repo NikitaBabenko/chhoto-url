@@ -1,0 +1,6 @@
+.git
+backend/target
+**/*.sqlite
+**/*.sqlite-*
+.env
+.env.*

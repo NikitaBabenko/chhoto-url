@@ -172,9 +172,7 @@ pub(crate) fn read() -> Config {
         // Determine whether the inputted API key is sufficiently secure
         if score(&analyze(key)) < 90.0 {
             warn!(
-                "API key is insecure! Please change it. Current key is: {}. Generated secure key which you may use: {}",
-                key,
-                auth::gen_key()
+                "API key is insecure! Replace it with a strong random key before public use."
             );
         } else {
             info!("Secure API key was provided.");

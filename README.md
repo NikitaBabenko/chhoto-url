@@ -47,6 +47,15 @@ for small. URL means, well... URL. So the name simply means Small URL.
 
 [See here.](./docs/INSTALLATION.md)
 
+## VibeNest guided deployment (pilot)
+
+[![Deploy to VibeNest](https://vibenest.net/deploy-to-vibenest.svg)](https://vibenest.net/deploy?repo=https://github.com/NikitaBabenko/chhoto-url)
+
+Read [the VibeNest setup guide](./docs/VIBENEST.md) **before starting**. This fork
+adds a source-build Dockerfile and optional hosted-deployment safeguards. The button
+opens a repository preview; persistent storage and credentials need manual setup.
+Free-tier runtime acceptance is pending; this is not an unattended one-click install.
+
 # Demo
 
 Link: [demo.chhoto.link](https://demo.chhoto.link)</br>

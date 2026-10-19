@@ -56,6 +56,20 @@ async fn main() -> Result<()> {
 
     // Read config from env vars
     let conf = config::read();
+    // Hosted deployments must not accidentally expose management without a password.
+    if std::env::var("CHHOTO_REQUIRE_PASSWORD").as_deref() == Ok("True")
+        && (conf.password.is_none() || conf.public_mode)
+    {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Set CHHOTO_PASSWORD and disable public mode before starting this deployment.",
+        ));
+    }
+    let secure_cookies = std::env::var("CHHOTO_SECURE_COOKIES").as_deref() == Ok("True");
+    let workers = std::env::var("CHHOTO_WORKERS")
+        .ok()
+        .and_then(|value| value.parse::<usize>().ok())
+        .filter(|&value| value > 0);
     // ArcMutex is necessary since the writer is shared across threads
     let writer = Arc::new(Mutex::new(database::open_db(&conf.db_location, false)));
 
@@ -97,7 +111,7 @@ async fn main() -> Result<()> {
                     .session_lifecycle(
                         PersistentSession::default().session_ttl(cookie::time::Duration::days(7)),
                     )
-                    .cookie_secure(false)
+                    .cookie_secure(secure_cookies)
                     .build(),
             )
             // Maintain a single instance of database throughout
@@ -138,7 +152,13 @@ async fn main() -> Result<()> {
         }
 
         app.default_service(actix_web::web::get().to(services::utils::error404))
-    })
+    });
+    let default_app = if let Some(workers) = workers {
+        default_app.workers(workers)
+    } else {
+        default_app
+    };
+    let default_app = default_app
     // Hardcode the port the server listens to. Allows for more intuitive Docker Compose port management
     .bind((&*addr, port))
     .inspect(|_| {
